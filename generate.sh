@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-version="$1"
+version="$(curl https://api.github.com/repos/kitsuyui/myip/releases/latest | jq -r .tag_name)"
 homepage='https://github.com/kitsuyui/go-myip'
 
 gethash() {
@@ -11,6 +11,7 @@ gethash() {
 sha256_amd64=$(gethash myip_darwin_amd64)
 sha256_386=$(gethash myip_darwin_386)
 
+cd "${0%/*}"
 cat <<EOF > myip.rb
 require "formula"
 

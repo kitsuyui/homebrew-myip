@@ -12,7 +12,7 @@ $ brew install myip
 ## Update
 
 ```console
-$ ./generate.sh v0.2.1
+$ ./generate.sh
 ```
 
 ## License
