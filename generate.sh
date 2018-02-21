@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 version="$(curl https://api.github.com/repos/kitsuyui/myip/releases/latest | jq -r .tag_name)"
-homepage='https://github.com/kitsuyui/go-myip'
+homepage='https://github.com/kitsuyui/myip'
 
 gethash() {
   curl -fsSL "${homepage}/releases/download/${version}/$1" 2>/dev/null \

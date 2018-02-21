@@ -1,6 +1,6 @@
 # homebrew-myip
 
-Homebrew Installation of [go-myip](https://github.com/kitsuyui/go-myip).
+Homebrew Installation of [myip](https://github.com/kitsuyui/myip).
 
 ## Installation
 
