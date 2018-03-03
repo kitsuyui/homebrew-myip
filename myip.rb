@@ -4,15 +4,15 @@ class Myip < Formula
   homepage "https://github.com/kitsuyui/myip"
 
   if Hardware::CPU.is_64_bit?
-    url "https://github.com/kitsuyui/myip/releases/download/v0.3.3/myip_darwin_amd64"
-    sha256 "c4ee79e55aa206033a76e1cafb46e766c14307652886eb02bfa6dd0d56968e77"
+    url "https://github.com/kitsuyui/myip/releases/download/v0.3.4/myip_darwin_amd64"
+    sha256 "aeef1fccb763e4ddccc22bf6616063ac5a0c20d80c8db31b0cb13ca2cc48f85e"
   else
-    url "https://github.com/kitsuyui/myip/releases/download/v0.3.3/myip_darwin_386"
-    sha256 "108b3cab0b23d10bfa765b40bf5fc8a35f18c478798d548bb414549f87019169"
+    url "https://github.com/kitsuyui/myip/releases/download/v0.3.4/myip_darwin_386"
+    sha256 "57e37ca75d3c2ed45b735ade5f063a2715953b7990b60dcdf9599f2e3f58e1f8"
   end
 
   head "https://github.com/kitsuyui/myip.git"
-  version "v0.3.3"
+  version "v0.3.4"
 
   def install
     if Hardware::CPU.is_64_bit?
