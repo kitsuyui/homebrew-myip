@@ -1,0 +1,36 @@
+name: test macOS installation
+on:
+  push:
+    branches:
+      - '*'
+
+jobs:
+  test_installation:
+    strategy:
+      matrix:
+        macos: [macos-11, macos-12]
+    runs-on: ${{ matrix.macos }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Homebrew
+        run: |
+          brew tap kitsuyui/myip  # kitsuyui/myip => kitsuyui/homebrew-myip
+
+      - name: Checkout branch
+        run: |
+          cd /usr/local/Homebrew/Library/Taps/kitsuyui/homebrew-myip
+          git checkout ${{ github.ref_name }}
+        if: ${{ github.ref_name != 'main' }}
+
+      - name: Test installation
+        run: |
+          uname -m
+          brew install myip
+          myip --help
+
+        env:
+          HOMEBREW_NO_AUTO_UPDATE: '1'
+          HOMEBREW_NO_INSTALL_CLEANUP: '1'
+          HOMEBREW_NO_ENV_HINTS: '1'
