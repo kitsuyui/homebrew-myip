@@ -8,8 +8,10 @@ gethash() {
   | awk '{print $1}'
 }
 
-sha256_amd64=$(gethash myip_darwin_amd64)
-sha256_386=$(gethash myip_darwin_386)
+arm64_file=myip_Darwin_arm64.tar.gz
+amd64_file=myip_Darwin_x86_64.tar.gz
+sha256_arm64=$(gethash "$arm64_file")
+sha256_amd64=$(gethash "$amd64_file")
 
 cd "${0%/*}"
 cat <<EOF > myip.rb
@@ -17,24 +19,19 @@ require "formula"
 
 class Myip < Formula
   homepage "${homepage}"
-
-  if Hardware::CPU.is_64_bit?
-    url "${homepage}/releases/download/${version}/myip_darwin_amd64"
-    sha256 "${sha256_amd64}"
-  else
-    url "${homepage}/releases/download/${version}/myip_darwin_386"
-    sha256 "${sha256_386}"
-  end
-
   head "${homepage}.git"
   version "${version}"
 
+  if Hardware::CPU.arm? and Hardware::CPU.is_64_bit?
+    url "https://github.com/kitsuyui/myip/releases/download/${version}/${arm64_file}"
+    sha256 "${sha256_arm64}"
+  elsif Hardware::CPU.intel? and Hardware::CPU.is_64_bit?
+    url "https://github.com/kitsuyui/myip/releases/download/${version}/${amd64_file}"
+    sha256 "${sha256_amd64}"
+  end
+
   def install
-    if Hardware::CPU.is_64_bit?
-      bin.install "myip_darwin_amd64" => "myip"
-    else
-      bin.install "myip_darwin_386" => "myip"
-    end
+    bin.install "myip" => "myip"
   end
 end
 EOF
