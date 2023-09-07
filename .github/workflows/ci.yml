@@ -1,8 +1,6 @@
 name: test macOS installation
 on:
-  push:
-    branches:
-      - '*'
+  - pull_request
 
 jobs:
   test_installation:
@@ -21,8 +19,8 @@ jobs:
       - name: Checkout branch
         run: |
           cd /usr/local/Homebrew/Library/Taps/kitsuyui/homebrew-myip
-          git checkout ${{ github.ref_name }}
-        if: ${{ github.ref_name != 'main' }}
+          git checkout ${{ github.head_ref }}
+        if: ${{ github.head_ref != 'main' }}
 
       - name: Test installation
         run: |
