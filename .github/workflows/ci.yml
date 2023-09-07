@@ -6,7 +6,7 @@ jobs:
   test_installation:
     strategy:
       matrix:
-        macos: [macos-11, macos-12]
+        macos: [macos-11, macos-12, macos-13]
     runs-on: ${{ matrix.macos }}
     steps:
       - name: Checkout
