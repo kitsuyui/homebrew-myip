@@ -6,7 +6,7 @@ jobs:
   test_installation:
     strategy:
       matrix:
-        macos: [macos-11, macos-12, macos-13]
+        macos: [macos-12, macos-13, macos-14]
     runs-on: ${{ matrix.macos }}
     steps:
       - name: Checkout
@@ -18,7 +18,8 @@ jobs:
 
       - name: Checkout branch
         run: |
-          cd /usr/local/Homebrew/Library/Taps/kitsuyui/homebrew-myip
+          INSTALLED_PATH=$(brew --repo kitsuyui/myip)
+          cd $INSTALLED_PATH
           git checkout ${{ github.head_ref }}
         if: ${{ github.head_ref != 'main' }}
 
