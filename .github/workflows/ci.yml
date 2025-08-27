@@ -6,7 +6,10 @@ jobs:
   test_installation:
     strategy:
       matrix:
-        macos: [macos-12, macos-13, macos-14]
+        # macOS versions supported by GitHub Actions runners
+        # https://endoflife.date/macos
+        # https://github.com/actions/runner-images?tab=readme-ov-file#available-images
+        macos: [macos-13, macos-14, macos-15]
     runs-on: ${{ matrix.macos }}
     steps:
       - name: Checkout
