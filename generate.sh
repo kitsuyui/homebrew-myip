@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-version="$(curl https://api.github.com/repos/kitsuyui/myip/releases/latest | jq -r .tag_name)"
+set -euo pipefail
+
+version="$(curl -fsSL https://api.github.com/repos/kitsuyui/myip/releases/latest | jq -er .tag_name)"
 homepage='https://github.com/kitsuyui/myip'
 
 gethash() {
@@ -13,8 +15,14 @@ amd64_file=myip_Darwin_x86_64.tar.gz
 sha256_arm64=$(gethash "$arm64_file")
 sha256_amd64=$(gethash "$amd64_file")
 
+if [[ -z "$sha256_arm64" || -z "$sha256_amd64" ]]; then
+  echo "failed to resolve release checksums" >&2
+  exit 1
+fi
+
 cd "${0%/*}"
-cat <<EOF > myip.rb
+tmpfile="$(mktemp myip.rb.XXXXXX)"
+cat <<EOF > "$tmpfile"
 require "formula"
 
 class Myip < Formula
@@ -35,3 +43,4 @@ class Myip < Formula
   end
 end
 EOF
+mv "$tmpfile" myip.rb
