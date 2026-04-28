@@ -3,6 +3,18 @@ on:
   - pull_request
 
 jobs:
+  shellcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install ShellCheck
+        run: sudo apt-get update && sudo apt-get install -y shellcheck
+
+      - name: Check shell scripts
+        run: shellcheck generate.sh
+
   test_installation:
     strategy:
       matrix:
@@ -20,10 +32,12 @@ jobs:
 
       - name: Checkout branch
         run: |
-          INSTALLED_PATH=$(brew --repo kitsuyui/myip)
-          cd $INSTALLED_PATH
-          git checkout ${{ github.head_ref }}
+          INSTALLED_PATH="$(brew --repo kitsuyui/myip)"
+          cd "$INSTALLED_PATH"
+          git checkout "$BRANCH"
         if: ${{ github.head_ref != 'main' }}
+        env:
+          BRANCH: ${{ github.head_ref }}
 
       - name: Test installation
         run: |
