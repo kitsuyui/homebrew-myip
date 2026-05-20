@@ -5,9 +5,31 @@ version="$(curl -fsSL https://api.github.com/repos/kitsuyui/myip/releases/latest
 homepage='https://github.com/kitsuyui/myip'
 
 gethash() {
-  curl -fsSL "${homepage}/releases/download/${version}/$1" 2>/dev/null \
-  | shasum -a 256 \
-  | awk '{print $1}'
+  local file="$1"
+  local tmpfile
+  local checksum
+
+  tmpfile="$(mktemp)"
+  if ! curl -fsSL "${homepage}/releases/download/${version}/${file}" -o "$tmpfile"; then
+    rm -f "$tmpfile"
+    echo "failed to download release archive: ${file}" >&2
+    return 1
+  fi
+
+  if [[ ! -s "$tmpfile" ]]; then
+    rm -f "$tmpfile"
+    echo "release archive is empty: ${file}" >&2
+    return 1
+  fi
+
+  if ! checksum="$(shasum -a 256 "$tmpfile" | awk '{print $1}')"; then
+    rm -f "$tmpfile"
+    echo "failed to calculate checksum: ${file}" >&2
+    return 1
+  fi
+
+  rm -f "$tmpfile"
+  printf '%s\n' "$checksum"
 }
 
 arm64_file=myip_Darwin_arm64.tar.gz
