@@ -16,4 +16,8 @@ class Myip < Formula
   def install
     bin.install "myip" => "myip"
   end
+
+  test do
+    system bin/"myip", "--help"
+  end
 end
