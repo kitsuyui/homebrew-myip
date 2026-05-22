@@ -2,6 +2,10 @@
 set -euo pipefail
 
 version="$(curl -fsSL https://api.github.com/repos/kitsuyui/myip/releases/latest | jq -er .tag_name)"
+if ! [[ "${version}" =~ ^v?[0-9]+\.[0-9]+\.[0-9]+[a-zA-Z0-9.+_-]*$ ]]; then
+  echo "unexpected version tag: '${version}'" >&2
+  exit 1
+fi
 homepage='https://github.com/kitsuyui/myip'
 
 gethash() {
