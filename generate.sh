@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-version="$(curl -fsSL https://api.github.com/repos/kitsuyui/myip/releases/latest | jq -er .tag_name)"
+version="$(curl -fsSL --connect-timeout 30 --max-time 60 https://api.github.com/repos/kitsuyui/myip/releases/latest | jq -er .tag_name)"
 if ! [[ "${version}" =~ ^v?[0-9]+\.[0-9]+\.[0-9]+[a-zA-Z0-9.+_-]*$ ]]; then
   echo "unexpected version tag: '${version}'" >&2
   exit 1
