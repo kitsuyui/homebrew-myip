@@ -14,7 +14,7 @@ gethash() {
   local checksum
 
   tmpfile="$(mktemp)"
-  if ! curl -fsSL "${homepage}/releases/download/${version}/${file}" -o "$tmpfile"; then
+  if ! curl -fsSL --connect-timeout 30 --max-time 120 "${homepage}/releases/download/${version}/${file}" -o "$tmpfile"; then
     rm -f "$tmpfile"
     echo "failed to download release archive: ${file}" >&2
     return 1
@@ -23,6 +23,12 @@ gethash() {
   if [[ ! -s "$tmpfile" ]]; then
     rm -f "$tmpfile"
     echo "release archive is empty: ${file}" >&2
+    return 1
+  fi
+
+  if ! gh attestation verify "$tmpfile" --repo kitsuyui/myip --format json > /dev/null; then
+    rm -f "$tmpfile"
+    echo "failed to verify build provenance attestation: ${file}" >&2
     return 1
   fi
 
