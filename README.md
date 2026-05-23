@@ -9,6 +9,11 @@ $ brew tap kitsuyui/homebrew-myip
 $ brew install myip
 ```
 
+## Supported platforms
+
+This formula installs prebuilt macOS binaries for Apple Silicon and 64-bit Intel Macs.
+Other architectures are not supported by the binary formula.
+
 ## Update
 
 ```console
