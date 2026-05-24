@@ -11,6 +11,8 @@ class Myip < Formula
   elsif Hardware::CPU.intel? and Hardware::CPU.is_64_bit?
     url "https://github.com/kitsuyui/myip/releases/download/v0.3.10/myip_Darwin_x86_64.tar.gz"
     sha256 "30d8a30d0414e7077ef11d6d303239e3512473e3f6d73b22ecfcf3daa501bb01"
+  else
+    odie "myip binary releases are only available for Apple Silicon and 64-bit Intel macOS"
   end
 
   def install

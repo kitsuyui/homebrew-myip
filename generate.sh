@@ -68,6 +68,8 @@ class Myip < Formula
   elsif Hardware::CPU.intel? and Hardware::CPU.is_64_bit?
     url "https://github.com/kitsuyui/myip/releases/download/${version}/${amd64_file}"
     sha256 "${sha256_amd64}"
+  else
+    odie "myip binary releases are only available for Apple Silicon and 64-bit Intel macOS"
   end
 
   def install
