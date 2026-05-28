@@ -59,21 +59,32 @@ require "formula"
 
 class Myip < Formula
   homepage "${homepage}"
-  head "${homepage}.git"
-  version "${version}"
 
-  if Hardware::CPU.arm? and Hardware::CPU.is_64_bit?
-    url "https://github.com/kitsuyui/myip/releases/download/${version}/${arm64_file}"
-    sha256 "${sha256_arm64}"
-  elsif Hardware::CPU.intel? and Hardware::CPU.is_64_bit?
-    url "https://github.com/kitsuyui/myip/releases/download/${version}/${amd64_file}"
-    sha256 "${sha256_amd64}"
-  else
-    odie "myip binary releases are only available for Apple Silicon and 64-bit Intel macOS"
+  stable do
+    version "${version}"
+
+    if Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
+      url "https://github.com/kitsuyui/myip/releases/download/${version}/${arm64_file}"
+      sha256 "${sha256_arm64}"
+    elsif Hardware::CPU.intel? && Hardware::CPU.is_64_bit?
+      url "https://github.com/kitsuyui/myip/releases/download/${version}/${amd64_file}"
+      sha256 "${sha256_amd64}"
+    else
+      odie "myip binary releases are only available for Apple Silicon and 64-bit Intel macOS"
+    end
+  end
+
+  head do
+    url "${homepage}.git", branch: "main"
+    depends_on "go" => :build
   end
 
   def install
-    bin.install "myip" => "myip"
+    if build.head?
+      system "go", "build", "-trimpath", "-ldflags", "-s -w", "-o", bin/"myip", "./cmd"
+    else
+      bin.install "myip" => "myip"
+    end
   end
 end
 EOF
