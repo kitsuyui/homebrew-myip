@@ -8,6 +8,10 @@ if ! [[ "${version}" =~ ^v?[0-9]+\.[0-9]+\.[0-9]+[a-zA-Z0-9.+_-]*$ ]]; then
 fi
 homepage='https://github.com/kitsuyui/myip'
 
+ruby_literal() {
+  ruby -e 'print ARGV[0].dump' "$1"
+}
+
 gethash() {
   local file="$1"
   local tmpfile
@@ -52,22 +56,30 @@ if [[ -z "$sha256_arm64" || -z "$sha256_amd64" ]]; then
   exit 1
 fi
 
+homepage_literal="$(ruby_literal "$homepage")"
+head_literal="$(ruby_literal "${homepage}.git")"
+version_literal="$(ruby_literal "$version")"
+arm64_url_literal="$(ruby_literal "${homepage}/releases/download/${version}/${arm64_file}")"
+amd64_url_literal="$(ruby_literal "${homepage}/releases/download/${version}/${amd64_file}")"
+sha256_arm64_literal="$(ruby_literal "$sha256_arm64")"
+sha256_amd64_literal="$(ruby_literal "$sha256_amd64")"
+
 cd "${0%/*}"
 tmpfile="$(mktemp myip.rb.XXXXXX)"
 cat <<EOF > "$tmpfile"
 require "formula"
 
 class Myip < Formula
-  homepage "${homepage}"
-  head "${homepage}.git"
-  version "${version}"
+  homepage ${homepage_literal}
+  head ${head_literal}
+  version ${version_literal}
 
   if Hardware::CPU.arm? and Hardware::CPU.is_64_bit?
-    url "https://github.com/kitsuyui/myip/releases/download/${version}/${arm64_file}"
-    sha256 "${sha256_arm64}"
+    url ${arm64_url_literal}
+    sha256 ${sha256_arm64_literal}
   elsif Hardware::CPU.intel? and Hardware::CPU.is_64_bit?
-    url "https://github.com/kitsuyui/myip/releases/download/${version}/${amd64_file}"
-    sha256 "${sha256_amd64}"
+    url ${amd64_url_literal}
+    sha256 ${sha256_amd64_literal}
   else
     odie "myip binary releases are only available for Apple Silicon and 64-bit Intel macOS"
   end
