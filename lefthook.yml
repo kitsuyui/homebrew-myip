@@ -1,0 +1,13 @@
+pre-commit:
+  commands:
+    shellcheck:
+      run: >
+        for name in $(env | sed -n 's/^\(GIT_[A-Za-z0-9_]*\)=.*/\1/p'); do unset "$name"; done;
+        shellcheck generate.sh
+
+pre-push:
+  commands:
+    shellcheck:
+      run: >
+        for name in $(env | sed -n 's/^\(GIT_[A-Za-z0-9_]*\)=.*/\1/p'); do unset "$name"; done;
+        shellcheck generate.sh
