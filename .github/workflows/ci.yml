@@ -1,6 +1,9 @@
 name: test macOS installation
 on:
-  - pull_request
+  pull_request:
+  schedule:
+    # weekly on Wednesday at 00:00 UTC — installability check independent of upstream releases
+    - cron: '0 0 * * 3'
 
 permissions:
   contents: read
@@ -38,7 +41,7 @@ jobs:
           INSTALLED_PATH="$(brew --repo kitsuyui/myip)"
           cd "$INSTALLED_PATH"
           git checkout "$BRANCH"
-        if: ${{ github.head_ref != 'main' }}
+        if: ${{ github.event_name == 'pull_request' && github.head_ref != 'main' }}
         env:
           BRANCH: ${{ github.head_ref }}
 
