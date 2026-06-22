@@ -114,3 +114,7 @@ Backups.backupdb
 .MobileBackups.trash
 MobileBackups.trash
 tmbootpicker.efi
+# -----------------------------------------------------------------------------
+# generate.sh can leave this root temp file behind if it exits before mv.
+# -----------------------------------------------------------------------------
+myip.rb.??????
