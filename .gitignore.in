@@ -1,3 +1,6 @@
 gibo dump Linux
 gibo dump Windows
 gibo dump macOS
+
+echo '# generate.sh can leave this root temp file behind if it exits before mv.'
+echo 'myip.rb.??????'
