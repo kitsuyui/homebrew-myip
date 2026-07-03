@@ -1,5 +1,3 @@
-require "formula"
-
 class Myip < Formula
   homepage "https://github.com/kitsuyui/myip"
 

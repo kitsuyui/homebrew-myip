@@ -67,8 +67,6 @@ sha256_amd64_literal="$(ruby_literal "$sha256_amd64")"
 cd "${0%/*}"
 tmpfile="$(mktemp myip.rb.XXXXXX)"
 cat <<EOF > "$tmpfile"
-require "formula"
-
 class Myip < Formula
   homepage ${homepage_literal}
 
