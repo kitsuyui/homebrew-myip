@@ -35,6 +35,7 @@ jobs:
       - name: Set up Homebrew
         run: |
           brew tap kitsuyui/myip  # kitsuyui/myip => kitsuyui/homebrew-myip
+          brew trust kitsuyui/myip
 
       - name: Checkout branch
         run: |
