@@ -1,0 +1,15 @@
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index 342f563..9937e08 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -26,7 +26,9 @@ jobs:
+       matrix:
+         # Current GitHub-hosted macOS runner labels:
+         # https://github.com/actions/runner-images?tab=readme-ov-file#available-images
+-        macos: [macos-14, macos-15, macos-26]
++        # macos-14 is deprecated (retiring 2026-11-02):
++        # https://github.com/actions/runner-images/issues/13518
++        macos: [macos-15, macos-26]
+     runs-on: ${{ matrix.macos }}
+     steps:
+       - name: Checkout
