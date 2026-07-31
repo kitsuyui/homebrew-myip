@@ -102,6 +102,10 @@ class Myip < Formula
       bin.install "myip" => "myip"
     end
   end
+
+  test do
+    system bin/"myip", "--help"
+  end
 end
 EOF
 mv "$tmpfile" myip.rb
