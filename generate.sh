@@ -32,14 +32,10 @@ gethash() {
   fi
 
   if ! attestation_output="$(gh attestation verify "$tmpfile" --repo kitsuyui/myip --format json 2>&1 > /dev/null)"; then
-    if [[ "$attestation_output" == *"HTTP 404: Not Found"* ]]; then
-      echo "warning: build provenance attestation not available for ${file}; continuing with SHA256 only" >&2
-    else
-      rm -f "$tmpfile"
-      printf 'failed to verify build provenance attestation: %s\n' "$file" >&2
-      printf '%s\n' "$attestation_output" >&2
-      return 1
-    fi
+    rm -f "$tmpfile"
+    printf 'failed to verify build provenance attestation: %s\n' "$file" >&2
+    printf '%s\n' "$attestation_output" >&2
+    return 1
   fi
 
   if ! checksum="$(shasum -a 256 "$tmpfile" | awk '{print $1}')"; then
