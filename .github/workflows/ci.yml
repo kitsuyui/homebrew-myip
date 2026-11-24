@@ -26,7 +26,7 @@ jobs:
       matrix:
         # Current GitHub-hosted macOS runner labels:
         # https://github.com/actions/runner-images?tab=readme-ov-file#available-images
-        macos: [macos-14, macos-15, macos-26]
+        macos: [macos-15, macos-26]
     runs-on: ${{ matrix.macos }}
     steps:
       - name: Checkout
